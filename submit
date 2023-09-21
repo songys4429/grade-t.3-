@@ -1,0 +1,45 @@
+#include <stdio.h>
+
+struct Student {
+    char n[50];
+    float kr;
+    float en;
+    float avr;
+};
+
+int main() {
+    FILE *intput = fopen("grade.txt", "r");
+    if (intput == NULL) {
+        printf("파일을 열 수 없습니다.\n");
+        return 1;
+    }
+
+    struct Student students[3];
+    for (int i = 0; i < 3; i++) {
+        fscanf(intput, "%s %f %f", students[i].n, &students[i].kr, &students[i].en);
+    }
+    fclose(intput);
+    for (int i = 0; i < 3; i++) {
+        students[i].avr = (students[i].kr + students[i].en) / 2;
+    }
+    FILE *output = fopen("average.txt", "w");
+    if (output == NULL) {
+        printf("결과를 저장할 파일을 열 수 없습니다.\n");
+        return 1;
+    }
+    for (int i = 0; i < 3; i++) {
+        printf("학생 이름: %s\n", students[i].n);
+        printf("국어 성적: %.2f\n", students[i].kr);
+        printf("영어 성적: %.2f\n", students[i].en);
+        printf("평균 성적: %.2f\n", students[i].avr);
+        printf("\n");
+        fprintf(output, "학생 이름: %s\n", students[i].n);
+        fprintf(output, "국어 성적: %.2f\n", students[i].kr);
+        fprintf(output, "영어 성적: %.2f\n", students[i].en);
+        fprintf(output, "평균 성적: %.2f\n", students[i].avr);
+        fprintf(output, "\n");
+    }
+    fclose(output);
+
+    return 0;
+}
